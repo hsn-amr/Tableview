@@ -20,6 +20,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         tabelView.dataSource = self
+        tabelView.delegate = self
     }
 
     @IBAction func beastButtonClicked(_ sender: Any) {
@@ -39,7 +40,7 @@ class ViewController: UIViewController {
     
 }
 
-extension ViewController: UITableViewDataSource{
+extension ViewController: UITableViewDataSource, UITableViewDelegate{
     // how many cells are we going to need?
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tasks.count
@@ -51,5 +52,13 @@ extension ViewController: UITableViewDataSource{
         cell.textLabel?.text = tasks[indexPath.row]
             // return cell so that Table View knows what to render in each row
         return cell
+    }
+    
+    // this for swip to delete
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete{
+            tasks.remove(at: indexPath.row)
+            tableView.reloadData()
+        }
     }
 }
